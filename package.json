@@ -1,0 +1,27 @@
+{
+  "name": "promise-pool",
+  "version": "1.0.0",
+  "description": "Easy Promise thread pool tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "tsc && ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meislzhua/promise-pool.git"
+  },
+  "keywords": [
+    "promise",
+    "pool"
+  ],
+  "author": "meislzhua",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meislzhua/promise-pool/issues"
+  },
+  "homepage": "https://github.com/meislzhua/promise-pool#readme",
+  "devDependencies": {
+    "ava": "^3.14.0",
+    "typescript": "^4.1.2"
+  }
+}
