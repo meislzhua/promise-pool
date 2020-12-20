@@ -1,6 +1,6 @@
 {
   "name": "@meislzhua/promise-pool",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Easy Promise thread pool tool",
   "main": "Thread.js",
   "scripts": {
