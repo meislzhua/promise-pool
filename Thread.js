@@ -45,6 +45,9 @@ class Thread {
     getHandleCount() {
         return this.handles.length;
     }
+    count() {
+        return this.getHandleCount() + this.getRunningCount();
+    }
     isFinish() {
         return !this.runningTasks.size;
     }
