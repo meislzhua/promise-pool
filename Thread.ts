@@ -4,27 +4,31 @@ interface TaskHandle {
     reject: Function
 }
 
-class Thread {
+export class Thread {
     private handles: TaskHandle[] = [];
     private runningTasks = new Set();
-    private threadNum;
+    private threadCount: number;
+    private finishHandles: TaskHandle[] = []
 
-    constructor({threadNum = 5} = {}) {
-        this.threadNum = threadNum;
+
+    constructor({threadCount = 5} = {}) {
+        this.threadCount = threadCount;
     }
 
-    async run(task: Function) {
+    private getHandle() {
         let handle: TaskHandle = {promise: null, resolve: null, reject: null};
         handle.promise = new Promise((resolve, reject) => Object.assign(handle, {resolve, reject}))
-        handle.promise = handle.promise.then(() => task())
-        this.handles.push(handle);
-
-        await this.exec().catch(e => null);
-        return handle.promise;
+        return handle;
     }
 
     private async exec() {
-        if (this.runningTasks.size < this.threadNum && this.handles.length) {
+        if (!this.runningTasks.size && !this.handles.length) {
+            for (let handle = this.finishHandles.pop(); handle; handle = this.finishHandles.pop()) {
+                handle.resolve();
+            }
+        }
+
+        if (this.runningTasks.size < this.threadCount && this.handles.length) {
             let handle = this.handles.shift();
             this.runningTasks.add(handle);
             handle.resolve();
@@ -36,6 +40,17 @@ class Thread {
                 })
                 .catch(() => null)
         }
+
+
+    }
+
+    async run(task: Function) {
+        let handle: TaskHandle = this.getHandle();
+        handle.promise = handle.promise.then(() => task())
+        this.handles.push(handle);
+
+        await this.exec().catch(e => null);
+        return handle.promise;
     }
 
     getRunningCount() {
@@ -45,6 +60,22 @@ class Thread {
     getHandleCount() {
         return this.handles.length
     }
+
+    count() {
+        return this.getHandleCount() + this.getRunningCount();
+    }
+
+    isFinish() {
+        return !this.runningTasks.size
+    }
+
+    async finish() {
+        let handle: TaskHandle = this.getHandle();
+        this.finishHandles.push(handle);
+        this.exec().catch(() => null)
+        return handle.promise;
+    }
+
 }
 
 export default Thread;

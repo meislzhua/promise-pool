@@ -1,8 +1,8 @@
 {
-  "name": "promise-pool",
+  "name": "@meislzhua/promise-pool",
   "version": "1.0.0",
   "description": "Easy Promise thread pool tool",
-  "main": "index.js",
+  "main": "Thread.js",
   "scripts": {
     "test": "tsc && ava"
   },
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "promise",
-    "pool"
+    "pool",
+    "async"
   ],
   "author": "meislzhua",
   "license": "MIT",
